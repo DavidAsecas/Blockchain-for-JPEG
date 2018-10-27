@@ -1,21 +1,26 @@
+let express = require('express');
+let app = express();
 const fs = require('fs');
 const geth = require('geth');
-
-// shell.exec('geth --datadir /home/david/Documentos/tfg/ init genesis.json', { async: true }, () => {
-//     let { stdout, stderr, code } = shell
-//     .exec('geth --networkid 1114 --rpc --rpcaddr 127.0.0.1 --rpcport 8545 --rpcapi "eth,net,web3,personal" --datadir /home/david/Documentos/tfg/ console 2>> eth.log',
-//     { async: true})
-// });
 
 let config = {
     networkid: "1114",
     port: 30303,
     rpcport: 8545,
     mine: null,
-    datadir: "/home/david/Documentos/tfg/",
+    datadir: "/home/david/Documentos/tfg/test",
     rpcapi: "eth,net,web3,personal"
 };
-createGenesisBlock('1114', 400, 9999999).then(() => gethInit())
+
+app.get('/', function (req, res) {
+    createGenesisBlock('1114', 400, 9999999).then(() => {
+        gethInit(config)
+    }
+)});
+
+app.listen(3000, function () {
+    console.log('Example app listening on port 3000!');
+});
 
 function gethInit(conf) {
     geth.start(conf, () => console.log('Geth initiated!'));

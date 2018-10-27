@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
     "core-js": "^2.5.4",
+    "express": "^4.16.4",
     "geth": "^0.4.0",
     "rxjs": "~6.2.0",
     "web3": "^1.0.0-beta.36",
