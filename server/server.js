@@ -2,21 +2,29 @@ let express = require('express');
 let app = express();
 const fs = require('fs');
 const geth = require('geth');
+const bodyParser = require('body-parser');
 
-let config = {
-    networkid: "1114",
-    port: 30303,
-    rpcport: 8545,
-    mine: null,
-    datadir: "/home/david/Documentos/tfg/test",
-    rpcapi: "eth,net,web3,personal"
-};
+app.use(function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+});
+
+app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
-    createGenesisBlock('1114', 400, 9999999).then(() => {
-        gethInit(config)
-    }
-)});
+
+    console.log('SIIII')
+});
+
+
+
+app.post('/', function (req, res) {
+    console.log(req.body);
+    res.send(req.body);
+    // createGenesisBlock('1114', 400, 9999999).then(() => {
+    //     gethInit(config)
+    // })
+});
 
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
