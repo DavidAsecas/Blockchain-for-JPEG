@@ -14,11 +14,12 @@ export class GethService {
     private gethUrl = 'http://localhost:3000';
     constructor(private http: HttpClient) {}
 
-    addBlockchain(config: Config): Observable<Config>{
-        return this.http.post<Config>(this.gethUrl, config)
-    }
-
-    test(conf: string) {
-        return this.http.get(this.gethUrl);
+    addBlockchain(config: Config): Observable<any>{
+        const headers = new HttpHeaders()
+          .set('Authorization', 'my-auth-token')
+          .set('Content-Type', 'application/json');
+        return this.http.post<Config>(this.gethUrl, config, {
+            headers: headers
+        });
     }
 }

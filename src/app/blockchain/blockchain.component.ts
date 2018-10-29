@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-// import * as Blockchain from '../../../blockchain.js';
-
 import Web3 from 'web3';
 import { GethService } from '../service/geth.service';
-// import * as geth from '../../../shell.js';
 
 declare var blockchain: any;
 @Component({
@@ -12,11 +9,11 @@ declare var blockchain: any;
 })
 export class BlockchainComponent {
     private web3: any;
-    count: number = 0; 
+    count: number = 0;
     blockchains: Array<Web3> = [];
     datadir: String;
 
-    constructor(private gethService: GethService){}
+    constructor(private gethService: GethService) { }
 
     createBlockchain() {
         let config = {
@@ -24,12 +21,12 @@ export class BlockchainComponent {
             port: 30303,
             rpcport: 8545,
             mine: null,
-            datadir: "/home/david/Documentos/tfg/" + this.datadir,
+            minerthreads: 1,
+            datadir: "/home/david/Documentos/tfg/testAccount/" + this.datadir,
             rpcapi: "eth,net,web3,personal"
         }
-        // geth.createGenesisBlock('1114', 400, 9999999).then(() => geth.gethInit(conf));
-        this.gethService.addBlockchain(config);
-        this.gethService.test('jejejeje');
+        this.gethService.addBlockchain(config)
+            .subscribe(res => console.log(res.message));
         // this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
         // console.log('Blockchain created');
         // this.blockchains.push(this.web3);

@@ -3,6 +3,7 @@ export interface Config {
     port: number;
     rpcport: number;
     mine: null;
+    minerthreads: number;
     datadir: string;
     rpcapi: string;
 }
