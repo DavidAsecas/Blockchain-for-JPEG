@@ -11,19 +11,22 @@ export class BlockchainComponent {
     private web3: any;
     count: number = 0;
     blockchains: Array<Web3> = [];
-    datadir: String;
+    datadir: string;
 
     constructor(private gethService: GethService) { }
 
     createBlockchain() {
+        let path = "/home/david/Documentos/tfg/testAccount/";
         let config = {
             networkid: "1114",
-            port: 30303,
+            port: 30303 + parseInt(this.datadir),
+            rpc: null,
             rpcport: 8545,
             mine: null,
             minerthreads: 1,
-            datadir: "/home/david/Documentos/tfg/testAccount/" + this.datadir,
-            rpcapi: "eth,net,web3,personal"
+            datadir: path + this.datadir,
+            rpcapi: "eth,net,web3,personal",
+            ipcpath: 'geth-' + this.datadir + '.ipc'
         }
         this.gethService.addBlockchain(config)
             .subscribe(res => console.log(res.message));

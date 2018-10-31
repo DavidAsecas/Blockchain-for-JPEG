@@ -1,9 +1,8 @@
 let express = require('express');
 let app = express();
 const fs = require('fs');
-const geth = require('geth');
 const bodyParser = require('body-parser');
-
+const geth = require('./geth')
 let path = '';
 
 app.use(bodyParser.json());
@@ -18,9 +17,10 @@ app.all("/*", function (req, res, next) {
 app.post('/', function (req, res) {
     let config = req.body;
     path = config.datadir;
-    createGenesisBlock('1114', 400, 9999999)
+    createGenesisBlock(config.networkid, 400, 9999999)
         .then(() => {
-            gethInit(config);
+            // gethInit(config);
+            geth.start(config);
             res.status(200).send({ message: 'Geth initiated!' })
         })
 });
@@ -29,8 +29,7 @@ app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
 
-function gethInit(config) {
-    console.log(config.datadir);                                                                                                                                                                                                                                                
+function gethInit(config) {                                                                                                                                                                                                                                                
     geth.start(config);
 }
 
@@ -50,7 +49,6 @@ function createGenesisBlock(chainId, difficulty, gasLimit) {
     };
 
     let genesisBlock = JSON.stringify(genesis, null, 3);
-    console.log(path + '/genesis.json');
     fs.mkdir(path, () => {
         fs.writeFile(path + "/genesis.json", genesisBlock);
     });
