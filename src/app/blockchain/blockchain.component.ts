@@ -20,9 +20,9 @@ export class BlockchainComponent {
         let config = {
             networkid: "1114",
             port: 30303 + parseInt(this.datadir),
-            rpc: null,
+            rpc: '',
             rpcport: 8545,
-            mine: null,
+            mine: '',
             minerthreads: 1,
             datadir: path + this.datadir,
             rpcapi: "eth,net,web3,personal",

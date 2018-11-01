@@ -1,9 +1,9 @@
 export interface Config {
     networkid: string;
     port: number;
-    rpc: null,
+    rpc: string,
     rpcport: number;
-    mine: null;
+    mine: string;
     minerthreads: number;
     datadir: string;
     rpcapi: string;

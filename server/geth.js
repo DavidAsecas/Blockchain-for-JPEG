@@ -1,12 +1,14 @@
 let cp = require('child_process');
-let args = [];
 
 function start(config) {
+    let args = []
     for (conf in config) {
-        args.push('--' + conf.toString() + ' ' + config[conf])
+        args.push('--' + conf);
+        args.push(config[conf]);
     }
-    console.log(args)
-    cp.spawn('geth', args, { stdio: 'inherit' });
+    let flags = args.filter(value => value != '');
+    console.log(flags)
+    cp.spawn('geth', flags, { stdio: 'ignore' });
 }
 
 module.exports.start = start;
