@@ -17,21 +17,17 @@ app.all("/*", function (req, res, next) {
 app.post('/', function (req, res) {
     let config = req.body;
     path = config.datadir;
-    createGenesisBlock(config.networkid, 400, 9999999)
-        .then(() => {
-            // gethInit(config);
-            geth.start(config);
-            res.status(200).send({ message: 'Geth initiated!' })
-        })
+    geth.createAddress();
+    // createGenesisBlock(config.networkid, 400, 9999999)
+    //     .then(() => {
+    //         geth.start(config);
+    //         res.status(200).send({ message: 'Geth initiated!' })
+    //     })
 });
 
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
-
-function gethInit(config) {                                                                                                                                                                                                                                                
-    geth.start(config);
-}
 
 function createGenesisBlock(chainId, difficulty, gasLimit) {
     let genesis = {

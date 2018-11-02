@@ -1,6 +1,7 @@
-let cp = require('child_process');
+const cp = require('child_process');
+const keythereum = require('keythereum');
 
-function start(config) {
+module.exports.start = function (config) {
     let args = []
     for (conf in config) {
         args.push('--' + conf);
@@ -11,4 +12,9 @@ function start(config) {
     cp.spawn('geth', flags, { stdio: 'ignore' });
 }
 
-module.exports.start = start;
+module.exports.createAddress = function () {
+    let dk = keythereum.create();
+    let address = keythereum.privateKeyToAddress(dk.privateKey);
+    console.log("public address:" + address);
+    console.log("private key in hex:" + dk.privateKey.toString('hex'));
+}
