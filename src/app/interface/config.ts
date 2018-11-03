@@ -8,4 +8,5 @@ export interface Config {
     datadir: string;
     rpcapi: string;
     ipcpath: string;
+    etherbase: string;
 }

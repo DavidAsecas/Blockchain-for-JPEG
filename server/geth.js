@@ -8,8 +8,9 @@ module.exports.start = function (config) {
         args.push(config[conf]);
     }
     let flags = args.filter(value => value != '');
+    flags.push(this.createAddress())
     console.log(flags)
-    cp.spawn('geth', flags, { stdio: 'ignore' });
+    cp.spawn('geth', flags, { stdio: 'inherit' });
 }
 
 module.exports.createAddress = function () {
@@ -17,4 +18,5 @@ module.exports.createAddress = function () {
     let address = keythereum.privateKeyToAddress(dk.privateKey);
     console.log("public address:" + address);
     console.log("private key in hex:" + dk.privateKey.toString('hex'));
+    return address;
 }

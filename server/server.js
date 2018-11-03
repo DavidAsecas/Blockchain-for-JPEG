@@ -17,12 +17,11 @@ app.all("/*", function (req, res, next) {
 app.post('/', function (req, res) {
     let config = req.body;
     path = config.datadir;
-    geth.createAddress();
-    // createGenesisBlock(config.networkid, 400, 9999999)
-    //     .then(() => {
-    //         geth.start(config);
-    //         res.status(200).send({ message: 'Geth initiated!' })
-    //     })
+    createGenesisBlock(config.networkid, 400, 9999999)
+        .then(() => {
+            geth.start(config);
+            res.status(200).send({ message: 'Geth initiated!' })
+        })
 });
 
 app.listen(3000, function () {
