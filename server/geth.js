@@ -8,15 +8,16 @@ module.exports.start = function (config) {
         args.push(config[conf]);
     }
     let flags = args.filter(value => value != '');
-    flags.push(this.createAddress())
-    console.log(flags)
-    cp.spawn('geth', flags, { stdio: 'inherit' });
+    let address = this.createAddress();
+    flags.push(address);
+    console.log(config.datadir)
+    cp.spawn('geth', ['init', config.datadir + '/genesis.json'], { stdio: 'inherit' });
+    // cp.spawn('geth', flags, { stdio: 'inherit' });
+    return address;
 }
 
 module.exports.createAddress = function () {
     let dk = keythereum.create();
     let address = keythereum.privateKeyToAddress(dk.privateKey);
-    console.log("public address:" + address);
-    console.log("private key in hex:" + dk.privateKey.toString('hex'));
     return address;
 }

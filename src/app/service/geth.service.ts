@@ -3,9 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Config } from '../interface/config';
 
-const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
-};
 
 @Injectable({
     providedIn: 'root'

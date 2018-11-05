@@ -25,10 +25,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [
-              "blockchain.js",
-              "shell.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {

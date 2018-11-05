@@ -3,26 +3,42 @@ let app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const geth = require('./geth')
+const cors = require('cors')
+let { abi, bin } = require('./contractABI')
+
 let path = '';
 
+app.use(cors())
+app.options('*', cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.all("/*", function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-    next();
-});
+// app.all("*", function (req, res, next) {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Content-Length, X-Requested-With');
+//     next();
+// });
 
 app.post('/', function (req, res) {
     let config = req.body;
     path = config.datadir;
     createGenesisBlock(config.networkid, 400, 9999999)
         .then(() => {
-            geth.start(config);
-            res.status(200).send({ message: 'Geth initiated!' })
+            let address = geth.start(config);
+            res.status(200).send({
+                message: 'Geth initiated!',
+                address: address
+            })
         })
 });
+
+app.get('/', function (req, res) {
+    res.status(200).send({
+        message: 'OK',
+        bin: bin,
+        abi: abi
+    })
+})
 
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
