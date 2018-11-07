@@ -2,7 +2,9 @@ export interface Config {
     networkid: number;
     port: number;
     rpc: string;
-    rpcport: number
+    rpcport: number;
+    rpccorsdomain: string;
+    rpcaddr: string;
     // mine: string;
     // minerthreads: number;
     datadir: string;

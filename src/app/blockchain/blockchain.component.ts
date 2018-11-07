@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import Web3 from 'web3';
 import { GethService } from '../service/geth.service';
 import { ContractService } from '../service/contract.service';
+import { Web3Service } from '../service/web3.service';
 
 @Component({
     selector: 'pm-block',
@@ -12,7 +13,9 @@ export class BlockchainComponent {
     datadir: string;
     account: any;
 
-    constructor(private gethService: GethService, private contractService: ContractService) { }
+    constructor(private gethService: GethService,
+                private contractService: ContractService,
+                private web3Service: Web3Service) { }
 
     createBlockchain() {
 
@@ -24,6 +27,8 @@ export class BlockchainComponent {
             port: 30303 + parseInt(this.datadir),
             rpc: '',
             rpcport: 8545,
+            rpccorsdomain: "*",
+            rpcaddr: "0.0.0.0",
             // mine: '',
             // minerthreads: 1,
             datadir: path + this.datadir,
@@ -34,15 +39,17 @@ export class BlockchainComponent {
         this.gethService.addBlockchain(config)
             .subscribe(res => {
                 console.log(res.message);
-                this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-                this.web3.eth.personal.newAccount('11111')
-                    .then((res, error) => {
-                        console.log(res);
-                        this.account = res;
-                        this.extendWeb3();
+                this.web3Service.createWeb3(config.datadir + '/' + config.ipcpath)
+                    .subscribe(console.log)
+                // this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+                // this.web3.eth.personal.newAccount('11111')
+                //     .then(res => {
+                //         console.log(res);
+                //         this.account = res;
+                        // this.extendWeb3();
                         // this.web3.miner.start(1);
-                    })
-                console.log('Blockchain created');
+                    // })
+                    // .catch(error => console.log)
             });
 
     }
