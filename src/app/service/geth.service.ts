@@ -13,8 +13,9 @@ export class GethService {
 
     addBlockchain(config: Config): Observable<any>{
         const headers = new HttpHeaders()
-          .set('Authorization', 'my-auth-token')
           .set('Content-Type', 'application/json');
-        return this.http.post<Config>(this.gethUrl, config);
+        return this.http.post(this.gethUrl, JSON.stringify(config), {
+            headers: headers
+        });
     }
 }

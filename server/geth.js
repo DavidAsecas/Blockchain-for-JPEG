@@ -3,6 +3,7 @@ const keythereum = require('keythereum');
 
 module.exports.start = function (config) {
     let args = []
+    console.log(config.datadir+'/'+config.ipcpath)
     for (conf in config) {
         args.push('--' + conf);
         args.push(config[conf]);
@@ -10,7 +11,6 @@ module.exports.start = function (config) {
     let flags = args.filter(value => value != '');
     let address = this.createAddress();
     flags.push(address);
-    console.log(flags)
     initGenesis(config.datadir).then(() => {
         // cp.spawn('geth', flags, { stdio: 'inherit' })
     })

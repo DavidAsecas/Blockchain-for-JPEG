@@ -13,9 +13,8 @@ export class Web3Service {
 
     createWeb3(datadir: string): Observable<any>{
         const headers = new HttpHeaders()
-          .set('Authorization', 'my-auth-token')
-          .set('Content-Type', 'application/json');
-        return this.http.post<string>(this.web3Url, datadir,{
+          .set('Content-Type', 'text/plain');
+        return this.http.post(this.web3Url, datadir,{
             headers: headers
         });
     }

@@ -19,7 +19,7 @@ export class BlockchainComponent {
 
     createBlockchain() {
 
-        let path = "/home/david/Documentos/tfg/testAccount/";
+        let path = "/home/david/Documentos/tfg/1testAccount/";
 
         // la manera de ir cambiando 'port' es provisional!!!
         let config = {
@@ -39,19 +39,16 @@ export class BlockchainComponent {
         this.gethService.addBlockchain(config)
             .subscribe(res => {
                 console.log(res.message);
-                this.web3Service.createWeb3(config.datadir + '/' + config.ipcpath)
-                    .subscribe(console.log)
+                // this.web3Service.createWeb3(config.datadir + '/' + config.ipcpath)
+                //     .subscribe(console.log)
                 // this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
                 // this.web3.eth.personal.newAccount('11111')
                 //     .then(res => {
                 //         console.log(res);
                 //         this.account = res;
-                        // this.extendWeb3();
-                        // this.web3.miner.start(1);
-                    // })
-                    // .catch(error => console.log)
+                //     })
+                //     .catch(error => console.log)
             });
-
     }
 
     extendWeb3() {

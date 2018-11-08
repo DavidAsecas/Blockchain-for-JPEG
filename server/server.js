@@ -5,20 +5,31 @@ const bodyParser = require('body-parser');
 const geth = require('./geth')
 let cors = require('cors')
 let { abi, bin } = require('./contractABI')
-let web3 = require('./w3b')
+let web3 = require('./web3')
 
 let path = '';
 
-// app.use(cors())
-// app.options('*', cors())
+// let originsWhitelist = ['http://localhost:4200']
+// let corsOptions = {
+//     origin: function(origin, callback) {
+//         let isWhiteListed = originsWhitelist.indexOf(origin) !== -1;
+//         callback(null, isWhiteListed)
+//     },
+//     credentials: true
+// }
+// app.use(cors(corsOptions))
+app.use(cors())
+app.options('*', cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.all("/*", function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
+// app.all("/*", function (req, res, next) {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type');
+//     next();
+// });
+
+
 
 let router = express.Router();
 
@@ -32,8 +43,8 @@ router.get('/contract', function (req, res) {
 
 router.post('/geth', function (req, res) {
     let config = req.body;
-    console.log(config)
     path = config.datadir;
+    console.log(path)
     createGenesisBlock(config.networkid)
         .then(() => {
             let address = geth.start(config);
@@ -46,11 +57,12 @@ router.post('/geth', function (req, res) {
 
 router.post('/web3', function (req, res) {
     let datadir = req.body;
-    let account = web3.setIpcProvider(datadir)
-    res.status(200).send({
-        message: 'OK',
-        account: account
-    })
+    console.log(datadir)
+    // let account = web3.setIpcProvider(datadir)
+    // res.status(200).send({
+    //     message: 'OK',
+    //     account: account
+    // })
 })
 
 // app.post('/geth', function (req, res) {
