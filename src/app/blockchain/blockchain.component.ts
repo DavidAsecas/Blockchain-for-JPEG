@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import { GethService } from '../service/geth.service';
 import { ContractService } from '../service/contract.service';
 import { Web3Service } from '../service/web3.service';
+import { GethRequest } from '../interface/gethRequest'
 
 @Component({
     selector: 'pm-block',
@@ -14,29 +15,32 @@ export class BlockchainComponent {
     account: any;
 
     constructor(private gethService: GethService,
-                private contractService: ContractService,
-                private web3Service: Web3Service) { }
+        private contractService: ContractService,
+        private web3Service: Web3Service) { }
 
     createBlockchain() {
-
         let path = "/home/david/Documentos/tfg/1testAccount/";
 
         // la manera de ir cambiando 'port' es provisional!!!
-        let config = {
-            networkid: 1114,
-            port: 30303 + parseInt(this.datadir),
-            rpc: '',
-            rpcport: 8545,
-            rpccorsdomain: "*",
-            rpcaddr: "0.0.0.0",
-            // mine: '',
-            // minerthreads: 1,
-            datadir: path + this.datadir,
-            rpcapi: "eth,net,web3,personal,miner",
-            ipcpath: 'geth-' + this.datadir + '.ipc',
-            etherbase: ''
+        let gethRequest: GethRequest = {
+            request: "create",
+            config: {
+                networkid: 1114,
+                port: 30303 + parseInt(this.datadir),
+                // rpc: '',
+                // rpcport: 8545,
+                // rpccorsdomain: "*",
+                // rpcaddr: "0.0.0.0",
+                // mine: '',
+                // minerthreads: 1,
+                datadir: path + this.datadir,
+                // rpcapi: "eth,net,web3,personal,miner",
+                ipcpath: 'geth-' + this.datadir + '.ipc'
+                // etherbase: ''
+            }
         }
-        this.gethService.addBlockchain(config)
+
+        this.gethService.createBlockchain(gethRequest)
             .subscribe(res => {
                 console.log(res.message);
                 // this.web3Service.createWeb3(config.datadir + '/' + config.ipcpath)
@@ -49,6 +53,31 @@ export class BlockchainComponent {
                 //     })
                 //     .catch(error => console.log)
             });
+    }
+
+    connectToBlockchain() {
+        let path = "/home/david/Documentos/tfg/1testAccount/";
+        let gethRequest: GethRequest = {
+            request: "connect",
+            config: {
+                networkid: 1114,
+                port: 30303 + parseInt(this.datadir),
+                // rpc: '',
+                // rpcport: 8545,
+                // rpccorsdomain: "*",
+                // rpcaddr: "0.0.0.0",
+                // mine: '',
+                // minerthreads: 1,
+                datadir: path + this.datadir,
+                // rpcapi: "eth,net,web3,personal,miner",
+                ipcpath: 'geth-' + this.datadir + '.ipc'
+                // etherbase: ''
+            }
+        }
+        this.gethService.connectToBlockchain(gethRequest)
+            .subscribe(res => {
+                console.log(res.message)
+            })
     }
 
     extendWeb3() {

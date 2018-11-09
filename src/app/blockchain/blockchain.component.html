@@ -1,4 +1,4 @@
-<div style="text-align:center">
+<!-- <div style="text-align:center">
     <button class="btn btn-primary" (click)='createBlockchain()'
     *ngIf='datadir'>
         Create
@@ -8,5 +8,20 @@
         Upload
     </button>
     <input type="text" #id/>
-
+</div> -->
+<div class="container" style="text-align: center">
+    <div class="jumbotron">
+        <div class="col-lg-4">
+            <button type="button" class="btn btn-primary btn-block" (click)='createBlockchain()'>CreateBlockchain</button>
+            <input type="text" [(ngModel)]='datadir' />
+            <button type="button" class="btn btn-primary btn-block" (click)='connectToBlockchain()'>ConnectToBlockchain</button>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <div class="col-lg-4">
+            <button type="button" class="btn btn-primary btn-block" (click)='uploadImage(id)'>UploadImage</button>
+            <input type="text" #id />
+            <button type="button" class="btn btn-primary btn-block">TODO</button>
+        </div>
+    </div>
 </div>

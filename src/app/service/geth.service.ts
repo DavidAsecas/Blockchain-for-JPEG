@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Config } from '../interface/config';
+import { GethRequest } from '../interface/gethRequest';
 
 
 @Injectable({
@@ -9,12 +9,20 @@ import { Config } from '../interface/config';
 })
 export class GethService {
     private gethUrl = 'http://localhost:3000/api/geth';
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
-    addBlockchain(config: Config): Observable<any>{
+    createBlockchain(req: GethRequest): Observable<any> {
         const headers = new HttpHeaders()
-          .set('Content-Type', 'application/json');
-        return this.http.post(this.gethUrl, JSON.stringify(config), {
+            .set('Content-Type', 'application/json');
+        return this.http.post(this.gethUrl, JSON.stringify(req), {
+            headers: headers
+        });
+    }
+
+    connectToBlockchain(req: GethRequest): Observable<any> {
+        const headers = new HttpHeaders()
+            .set('Content-Type', 'application/json');
+        return this.http.post(this.gethUrl, JSON.stringify(req), {
             headers: headers
         });
     }
