@@ -7,15 +7,17 @@ module.exports.createBlockchain = function (config) {
     let networkid = config.networkid;
     let datadir = config.datadir;
     createGenesisBlock(networkid, datadir).then(() => {
-        cp.spawn('geth', ['--datadir', config.datadir, 'init', config.datadir + '/genesis.json'], { stdio: 'inherit' })
+        cp.spawn('geth', ['--datadir', config.datadir, 'init', config.datadir + '/genesis.json'], {
+            stdio: 'inherit'
+        })
     })
     return "Blockchain created"
 }
 
 module.exports.connectToBlockchain = function (config) {
     let flags = parseFlags(config);
-    cp.spawn('geth', flags, { stdio: 'inherit' });
-    return "Connected to blockchain"
+    cp.spawn('geth', flags, { stdio: 'inherit' })
+    return "Connected to blockchain";
 }
 
 function createAddress() {

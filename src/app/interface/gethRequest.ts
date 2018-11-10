@@ -1,5 +1,3 @@
-
-
 export interface GethRequest {
     request: string;
     config: Config;

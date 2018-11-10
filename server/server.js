@@ -7,8 +7,6 @@ let cors = require('cors')
 let { abi, bin } = require('./contractABI')
 let web3 = require('./web3')
 
-let path = '';
-
 app.use(cors())
 app.options('*', cors())
 app.use(bodyParser.json());
@@ -42,8 +40,16 @@ router.post('/geth', function (req, res) {
 })
 
 router.post('/web3', function (req, res) {
-    let datadir = req.body;
-    console.log(datadir)
+    let request = req.body.request;
+    let ipcpath = req.body.data
+    if (request == "setWeb3") {
+        web3.setWeb3(ipcpath)
+            .then((address) => {
+                res.status(200).send({
+                    address: address
+                })
+            })
+    }
     // let account = web3.setIpcProvider(datadir)
     // res.status(200).send({
     //     message: 'OK',

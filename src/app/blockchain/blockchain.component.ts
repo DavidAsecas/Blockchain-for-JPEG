@@ -4,6 +4,7 @@ import { GethService } from '../service/geth.service';
 import { ContractService } from '../service/contract.service';
 import { Web3Service } from '../service/web3.service';
 import { GethRequest } from '../interface/gethRequest'
+import { config } from 'rxjs';
 
 @Component({
     selector: 'pm-block',
@@ -13,14 +14,14 @@ export class BlockchainComponent {
     private web3: any;
     datadir: string;
     account: any;
+    path = "/home/david/Documentos/tfg/1testAccount/";
+
 
     constructor(private gethService: GethService,
         private contractService: ContractService,
         private web3Service: Web3Service) { }
 
     createBlockchain() {
-        let path = "/home/david/Documentos/tfg/1testAccount/";
-
         // la manera de ir cambiando 'port' es provisional!!!
         let gethRequest: GethRequest = {
             request: "create",
@@ -33,7 +34,7 @@ export class BlockchainComponent {
                 // rpcaddr: "0.0.0.0",
                 // mine: '',
                 // minerthreads: 1,
-                datadir: path + this.datadir,
+                datadir: this.path + this.datadir,
                 // rpcapi: "eth,net,web3,personal,miner",
                 ipcpath: 'geth-' + this.datadir + '.ipc'
                 // etherbase: ''
@@ -56,7 +57,6 @@ export class BlockchainComponent {
     }
 
     connectToBlockchain() {
-        let path = "/home/david/Documentos/tfg/1testAccount/";
         let gethRequest: GethRequest = {
             request: "connect",
             config: {
@@ -68,7 +68,7 @@ export class BlockchainComponent {
                 // rpcaddr: "0.0.0.0",
                 // mine: '',
                 // minerthreads: 1,
-                datadir: path + this.datadir,
+                datadir: this.path + this.datadir,
                 // rpcapi: "eth,net,web3,personal,miner",
                 ipcpath: 'geth-' + this.datadir + '.ipc'
                 // etherbase: ''
@@ -77,6 +77,13 @@ export class BlockchainComponent {
         this.gethService.connectToBlockchain(gethRequest)
             .subscribe(res => {
                 console.log(res.message)
+                this.web3Service.setWeb3({
+                    request: "setWeb3",
+                    data: this.path + this.datadir + '/geth-' + this.datadir + '.ipc'
+                })
+                .subscribe(res => {
+                    console.log(res.address)
+                })
             })
     }
 
@@ -96,6 +103,7 @@ export class BlockchainComponent {
     }
 
     uploadImage(id) {
+        
         this.contractService.getContractData()
             .subscribe(res => {
                 let abi = res.abi;

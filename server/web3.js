@@ -2,9 +2,9 @@ const Web3 = require('web3')
 const net = require('net')
 let web3
 
-module.exports.setIpcProvider = function (datadir) {
+module.exports.setWeb3 = function (ipcpath) {
     let account
-    web3 = new Web3(new Web3.providers.IpcProvider(datadir, net))
-    web3.eth.personal.newAccount('11111').then(res => account = res)
-    return account
+    console.log(ipcpath)
+    web3 = new Web3(new Web3.providers.IpcProvider(ipcpath, net))
+    return web3.eth.personal.newAccount('11111')
 }
