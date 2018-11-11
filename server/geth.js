@@ -3,7 +3,6 @@ const keythereum = require('keythereum');
 const fs = require('fs');
 
 module.exports.createBlockchain = function (config) {
-    console.log(config)
     let networkid = config.networkid;
     let datadir = config.datadir;
     createGenesisBlock(networkid, datadir).then(() => {
@@ -11,7 +10,7 @@ module.exports.createBlockchain = function (config) {
             stdio: 'inherit'
         })
     })
-    return "Blockchain created"
+    return "Blockchain created";
 }
 
 module.exports.connectToBlockchain = function (config) {
@@ -20,15 +19,8 @@ module.exports.connectToBlockchain = function (config) {
     return "Connected to blockchain";
 }
 
-function createAddress() {
-    let dk = keythereum.create();
-    let address = keythereum.privateKeyToAddress(dk.privateKey);
-    return address;
-}
-
 function parseFlags(config) {
     let args = []
-    console.log(config.datadir + '/' + config.ipcpath)
     for (conf in config) {
         args.push('--' + conf);
         args.push(config[conf]);
@@ -63,8 +55,13 @@ function createGenesisBlock(chainId, datadir) {
         fs.writeFile(datadir + "/genesis.json", genesisBlock);
     });
     return new Promise((resolve, reject) => {
-        console.log("Genesis block created!")
         resolve();
     });
+}
+
+function createAddress() {
+    let dk = keythereum.create();
+    let address = keythereum.privateKeyToAddress(dk.privateKey);
+    return address;
 }
 

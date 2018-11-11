@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import Web3 from 'web3';
 import { GethService } from '../service/geth.service';
 import { ContractService } from '../service/contract.service';
 import { Web3Service } from '../service/web3.service';
 import { GethRequest } from '../interface/gethRequest'
-import { config } from 'rxjs';
 
 @Component({
     selector: 'pm-block',
@@ -13,7 +11,7 @@ import { config } from 'rxjs';
 export class BlockchainComponent {
     private web3: any;
     datadir: string;
-    account: any;
+    account: string;
     path = "/home/david/Documentos/tfg/1testAccount/";
 
 
@@ -28,16 +26,10 @@ export class BlockchainComponent {
             config: {
                 networkid: 1114,
                 port: 30303 + parseInt(this.datadir),
-                // rpc: '',
-                // rpcport: 8545,
-                // rpccorsdomain: "*",
-                // rpcaddr: "0.0.0.0",
                 // mine: '',
                 // minerthreads: 1,
                 datadir: this.path + this.datadir,
-                // rpcapi: "eth,net,web3,personal,miner",
                 ipcpath: 'geth-' + this.datadir + '.ipc'
-                // etherbase: ''
             }
         }
 
@@ -62,16 +54,10 @@ export class BlockchainComponent {
             config: {
                 networkid: 1114,
                 port: 30303 + parseInt(this.datadir),
-                // rpc: '',
-                // rpcport: 8545,
-                // rpccorsdomain: "*",
-                // rpcaddr: "0.0.0.0",
                 // mine: '',
                 // minerthreads: 1,
                 datadir: this.path + this.datadir,
-                // rpcapi: "eth,net,web3,personal,miner",
                 ipcpath: 'geth-' + this.datadir + '.ipc'
-                // etherbase: ''
             }
         }
         this.gethService.connectToBlockchain(gethRequest)
@@ -80,42 +66,22 @@ export class BlockchainComponent {
                 this.web3Service.setWeb3({
                     request: "setWeb3",
                     data: this.path + this.datadir + '/geth-' + this.datadir + '.ipc'
-                })
-                .subscribe(res => {
+                }).subscribe(res => {
                     console.log(res.address)
+                    this.account = res.address
                 })
             })
     }
 
-    extendWeb3() {
-        this.web3.extend({
-            property: 'miner',
-            methods: [{
-                name: 'start',
-                call: 'miner_start',
-                params: 1
-            },
-            {
-                name: 'stop',
-                call: 'miner_stop'
-            }]
-        })
-    }
-
     uploadImage(id) {
-        
-        this.contractService.getContractData()
-            .subscribe(res => {
-                let abi = res.abi;
-                let bin = res.bin;
-                const contract = new this.web3.eth.Contract(JSON.parse(abi));
-                contract.deploy({
-                    data: '0x' + bin,
-                    arguments: [id.value]
-                })
-                    .send({
-                        from: this.account
-                    })
-            });
+        this.web3Service.uploadImage({
+            request: "upload",
+            data: {
+                id: id,
+                account: this.account
+            }
+        }).subscribe(res => {
+            console.log(res.id)
+        });
     }
 }

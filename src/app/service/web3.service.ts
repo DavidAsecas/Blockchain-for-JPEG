@@ -19,4 +19,12 @@ export class Web3Service {
             headers: headers
         });
     }
+
+    uploadImage(req: Web3Request): Observable<any> {
+        const headers = new HttpHeaders()
+            .set('Content-Type', 'application/json');
+        return this.http.post(this.web3Url, req, {
+            headers: headers
+        });
+    }
 }
