@@ -41,7 +41,7 @@ function createGenesisBlock(chainId, datadir) {
         },
         "alloc": {},
         "coinbase": "0x0000000000000000000000000000000000000000",
-        "difficulty": "0x20000",
+        "difficulty": "0x190",
         "extraData": "",
         "gasLimit": "0x2fefd8",
         "nonce": "0x0000000000000042",
