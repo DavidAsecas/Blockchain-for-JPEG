@@ -20,10 +20,18 @@ export class Web3Service {
         });
     }
 
-    uploadImage(req: Web3Request): Observable<any> {
+    uploadId(req: Web3Request): Observable<any> {
         const headers = new HttpHeaders()
             .set('Content-Type', 'application/json');
         return this.http.post(this.web3Url, req, {
+            headers: headers
+        });
+    }
+
+    getId(): Observable<any> {
+        const headers = new HttpHeaders()
+            .set('Content-Type', 'application/json');
+        return this.http.get(this.web3Url, {
             headers: headers
         });
     }

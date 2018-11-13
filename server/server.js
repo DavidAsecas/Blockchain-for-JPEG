@@ -15,17 +15,17 @@ let router = express.Router();
 router.post('/geth', function (req, res) {
     let config = req.body.config;
     if (req.body.request == "create") {
-        console.log(config.datadir)
         let message = geth.createBlockchain(config);
-        console.log(message)
         res.status(200).send({
             message: message
         })
     } else if (req.body.request == "connect") {
-        let message = geth.connectToBlockchain(config);
-        res.status(200).send({
-            message: message
-        })
+        geth.connectToBlockchain(config)
+            .then(message => {
+                res.status(200).send({
+                    message: message
+                })
+            })
     }
 })
 
@@ -40,20 +40,23 @@ router.post('/web3', function (req, res) {
                 })
             })
     } else if (request == "upload") {
-        web3.uploadImage(data)
-            .then((contract) => {
+        web3.uploadId(data)
+            .then(contract => {
                 res.status(200).send({
                     id: data
                 })
             })
     }
+})
 
+router.get('/web3', function (req, res) {
+    web3.getId()
+        .then(id => {
+            res.status(200).send({
+                id: id
+            })
+        })
 
-    // let account = web3.setIpcProvider(datadir)
-    // res.status(200).send({
-    //     message: 'OK',
-    //     account: account
-    // })
 })
 
 app.use('/api', router)

@@ -1,12 +1,13 @@
 const Web3 = require('web3')
 const net = require('net')
+const keythereum = require('keythereum');
 const { abi, bin } = require('./contractABI')
 
 let web3;
+let contract;
 
 module.exports.setWeb3 = function (ipcpath) {
     let address;
-    console.log(ipcpath)
     web3 = new Web3(new Web3.providers.IpcProvider(ipcpath, net))
     web3.extend({
         property: 'miner',
@@ -35,11 +36,10 @@ module.exports.setWeb3 = function (ipcpath) {
     })
 }
 
-module.exports.uploadImage = function (data) {
-    let contract = new web3.eth.Contract(JSON.parse(abi));
-    let account;
+module.exports.uploadId = function (data) {
+    let address = createAddress();
+    contract = new web3.eth.Contract(JSON.parse(abi), address);
     web3.eth.getAccounts().then(accounts => account = accounts[0])
-    console.log(data)
     return web3.eth.personal.unlockAccount(data.account, '11111', 600)
         .then(() => {
             return contract.deploy({
@@ -51,9 +51,15 @@ module.exports.uploadImage = function (data) {
                     gas: 3141592,
                     gasPrice: '300000'
                 })
-            // .estimateGas({
-            //     from: data.account
-            // })
-            // .then(console.log)
         })
+}
+
+module.exports.getId = function () {
+    return contract.methods.getId().call()
+}
+
+function createAddress() {
+    let dk = keythereum.create();
+    let address = keythereum.privateKeyToAddress(dk.privateKey);
+    return address;
 }

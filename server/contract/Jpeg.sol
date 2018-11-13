@@ -11,4 +11,8 @@ contract Jpeg {
     function setId(string _id) public {
         id = _id;
     }
+
+    function getId() public view returns (string) {
+        return id;
+    }
 }

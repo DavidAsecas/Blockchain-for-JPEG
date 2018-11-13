@@ -36,15 +36,6 @@ export class BlockchainComponent {
         this.gethService.createBlockchain(gethRequest)
             .subscribe(res => {
                 console.log(res.message);
-                // this.web3Service.createWeb3(config.datadir + '/' + config.ipcpath)
-                //     .subscribe(console.log)
-                // this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-                // this.web3.eth.personal.newAccount('11111')
-                //     .then(res => {
-                //         console.log(res);
-                //         this.account = res;
-                //     })
-                //     .catch(error => console.log)
             });
     }
 
@@ -73,15 +64,22 @@ export class BlockchainComponent {
             })
     }
 
-    uploadImage(id) {
-        this.web3Service.uploadImage({
+    uploadId(id) {
+        this.web3Service.uploadId({
             request: "upload",
             data: {
                 id: id,
                 account: this.account
             }
         }).subscribe(res => {
-            console.log(res.id)
+            //console.log(res.id)
         });
+    }
+
+    getId() {
+        this.web3Service.getId()
+            .subscribe(res => {
+                console.log(res.id)
+            })
     }
 }

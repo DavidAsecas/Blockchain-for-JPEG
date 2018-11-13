@@ -1,5 +1,4 @@
 const cp = require('child_process');
-const keythereum = require('keythereum');
 const fs = require('fs');
 
 module.exports.createBlockchain = function (config) {
@@ -15,8 +14,31 @@ module.exports.createBlockchain = function (config) {
 
 module.exports.connectToBlockchain = function (config) {
     let flags = parseFlags(config);
-    cp.spawn('geth', flags, { stdio: 'inherit' })
-    return "Connected to blockchain";
+    let child = cp.spawn('geth', flags, { stdio: ['inherit', 'inherit', 'pipe'] })
+    return new Promise((resolve, reject) => {
+        child.stderr.setEncoding('utf8');
+        child.stderr.on('data', data => {
+            let buffer = new Buffer(data)
+            let matches = buffer.toString().match(/IPC endpoint opened/g)
+            console.log(buffer.toString())
+            if (matches != null) {
+                resolve("Connected to blockchain")
+            }
+        })
+    })
+}
+
+function ipcIsOpened() {
+    return new Promise((resolve, reject) => {
+        cp.stderr.setEncoding('utf8');
+        cp.stderr.on('data', data => {
+            let buffer = new Buffer(data)
+            let matches = buffer.toString().match(/IPC endpoint opened/g)
+            if (matches != null) {
+                resolve(true)
+            }
+        })
+    })
 }
 
 function parseFlags(config) {
@@ -58,10 +80,3 @@ function createGenesisBlock(chainId, datadir) {
         resolve();
     });
 }
-
-function createAddress() {
-    let dk = keythereum.create();
-    let address = keythereum.privateKeyToAddress(dk.privateKey);
-    return address;
-}
-
